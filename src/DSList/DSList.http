@@ -1,0 +1,6 @@
+@DSList_HostAddress = http://localhost:5079
+
+GET {{DSList_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
