@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,26 +9,23 @@ namespace DSList.Entities
 {
     public class BelongingPK
     {
-        public long GameId { get; set; }
-        public long ListId { get; set; }
-
-        // Relacionamentos (chaves estrangeiras)
-        [ForeignKey("GameId")]
+        [Key]
+        [Column("game_id")]
         public Game Game { get; set; }
 
-        [ForeignKey("ListId")]
+        [Column("list_id")]
         public GameList GameList { get; set; }
 
         public override bool Equals(object obj)
         {
             return obj is BelongingPK other &&
-                   GameId == other.GameId &&
-                   ListId == other.ListId;
+                   Equals(Game, other.Game) &&
+                   Equals(GameList, other.GameList);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(GameId, ListId);
+            return HashCode.Combine(Game, GameList);
         }
     }
 }
