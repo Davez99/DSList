@@ -10,34 +10,23 @@ namespace DSList.Entities
     [Table("tb_belonging")]
     public class Belonging
     {
-        public BelongingPK Id { get; set; } = new BelongingPK();
+        [Column("game_id")]
+        public int GameId { get; set; }
+        [Column("list_id")]
+        public int ListId { get; set; }
 
+        [Column("position")]
         public int Position { get; set; }
 
-        // Métodos para facilitar o acesso às entidades relacionadas
-        [NotMapped]
-        public Game Game
-        {
-            get => Id.Game;
-            set => Id.Game = value;
-        }
+         // Construtor vazio para uso pelo Entity Framework
+        public Belonging() { }
 
-        [NotMapped]
-        public GameList GameList
+        // Construtor completo
+        public Belonging(int gameId, int listId, int position)
         {
-            get => Id.GameList;
-            set => Id.GameList = value;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Belonging other &&
-                   Id.Equals(other.Id);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id);
+            GameId = gameId;
+            ListId = listId;
+            Position = position;
         }
     }
 }

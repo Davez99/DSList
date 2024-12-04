@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DSList.Entities
 {
@@ -12,36 +9,55 @@ namespace DSList.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public long GameId { get; set; }
 
         [Required]
+        [Column("title")]
+        [MaxLength(255)] // Limita o tamanho, ajustável conforme necessidade
         public string Title { get; set; }
 
         [Column("game_year")]
-        public int? Year { get; set; }
+        public int? GameYear { get; set; }
 
+        [Column("genre")]
+        [MaxLength(100)] // Limita o tamanho
         public string Genre { get; set; }
 
+        [Column("platforms")]
+        [MaxLength(200)] // Limita o tamanho
         public string Platforms { get; set; }
 
+        [Column("score")]
         public double? Score { get; set; }
 
         [Column("img_url")]
+        [MaxLength(500)] // Limita o tamanho
         public string ImgUrl { get; set; }
 
-        [Column(TypeName = "TEXT")]
+        [Column("short_description", TypeName = "TEXT")]
         public string ShortDescription { get; set; }
 
-        [Column(TypeName = "TEXT")]
+        [Column("long_description", TypeName = "TEXT")]
         public string LongDescription { get; set; }
 
+        // Construtor vazio para Entity Framework
         public Game() { }
 
-        public Game(long id, string title, int? year, string genre, string platforms, double? score, string imgUrl, string shortDescription, string longDescription)
+        // Construtor completo
+        public Game(
+            long id,
+            string title,
+            int? gameYear,
+            string genre,
+            string platforms,
+            double? score,
+            string imgUrl,
+            string shortDescription,
+            string longDescription)
         {
-            Id = id;
+            GameId = id;
             Title = title;
-            Year = year;
+            GameYear = gameYear;
             Genre = genre;
             Platforms = platforms;
             Score = score;
@@ -52,13 +68,12 @@ namespace DSList.Entities
 
         public override bool Equals(object obj)
         {
-            return obj is Game game &&
-                   Id == game.Id;
+            return obj is Game game && GameId == game.GameId;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id);
+            return HashCode.Combine(GameId);
         }
     }
 }

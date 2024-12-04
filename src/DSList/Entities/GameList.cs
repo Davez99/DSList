@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DSList.Entities
 {
@@ -12,28 +9,31 @@ namespace DSList.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public long ListId { get; set; }
 
         [Required]
+        [Column("name")]
+        [MaxLength(100)] // Limita o tamanho do nome, ajustável conforme necessidade
         public string Name { get; set; }
 
+        // Construtor vazio para uso pelo Entity Framework
         public GameList() { }
 
+        // Construtor com parâmetros
         public GameList(long id, string name)
         {
-            Id = id;
+            ListId = id;
             Name = name;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is GameList gameList &&
-                   Id == gameList.Id;
+            return obj is GameList gameList && ListId == gameList.ListId;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id);
+            return HashCode.Combine(ListId);
         }
     }
 }
