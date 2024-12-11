@@ -15,14 +15,15 @@ namespace DSList.Services.Seeder
             _connectionString = connectionString;
         }
 
-        public void SeedDatabase(string scriptFilePath)
+        public void SeedDatabase()
         {
+            var scriptFilePath = Path.Combine(AppContext.BaseDirectory, "Scripts", "Imports.sql");
+
             if (!File.Exists(scriptFilePath))
             {
                 throw new FileNotFoundException($"Script file not found: {scriptFilePath}");
             }
 
-            // Lê o conteúdo do arquivo SQL
             var sqlScript = File.ReadAllText(scriptFilePath);
 
             using (var connection = new SqliteConnection(_connectionString))
@@ -38,5 +39,6 @@ namespace DSList.Services.Seeder
 
             Console.WriteLine("Database seeded successfully!");
         }
+
     }
 }

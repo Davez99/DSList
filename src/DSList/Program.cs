@@ -17,15 +17,22 @@ builder.Services.AddDbContext<GameContext>(option =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddSingleton(new DatabaseSeeder(connectionString));
 
+//Adição da Leitura das controllers
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 
-// Executa o seeder durante a inicialização
+// Executa as migrações e o seeder durante a inicialização
 using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<GameContext>();
+    dbContext.Database.Migrate(); // Aplica as migrações
+
     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
-    seeder.SeedDatabase("import.sql");
+    seeder.SeedDatabase(); // Executa o seeder
 }
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
