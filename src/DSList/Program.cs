@@ -13,12 +13,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GameContext>(option => 
     option.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configuração do SQLite
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddSingleton(new DatabaseSeeder(connectionString));
+// // Configuração do SQLite
+// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// builder.Services.AddSingleton(new DatabaseSeeder(connectionString));
 
 //Adição da Leitura das controllers
 builder.Services.AddControllers();
+
+
 
 var app = builder.Build();
 
@@ -26,13 +28,14 @@ var app = builder.Build();
 // Executa as migrações e o seeder durante a inicialização
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<GameContext>();
-    dbContext.Database.Migrate(); // Aplica as migrações
+    // var dbContext = scope.ServiceProvider.GetRequiredService<GameContext>();
+    // dbContext.Database.Migrate(); // Aplica as migrações
 
     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
     seeder.SeedDatabase(); // Executa o seeder
 }
 
+//fazer um scopo diferente 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
