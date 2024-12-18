@@ -26,6 +26,7 @@ namespace DSList.Services.Seeder
 
             var sqlScript = File.ReadAllText(scriptFilePath);
 
+            //Esse pedaço tem que sair daqui e usar o repository 
             using (var connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
@@ -36,7 +37,7 @@ namespace DSList.Services.Seeder
                     command.ExecuteNonQuery();
                 }
             }
-
+            //até aqui.
             Console.WriteLine("Database seeded successfully!");
         }
 
