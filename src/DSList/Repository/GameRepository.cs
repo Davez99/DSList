@@ -10,10 +10,12 @@ using DSList.Data;
 using Microsoft.Extensions.Logging;
 using DSList.DTOs;
 using Microsoft.EntityFrameworkCore;
+using DSList.Interfaces;
+using DSList.Entities;
 
 namespace DSList.Repository
 {
-    public class GameRepository
+    public class GameRepository: IGameRepository
     {
         private readonly GameContext _context;
         private readonly ILogger<GameRepository> _logger;
@@ -22,6 +24,16 @@ namespace DSList.Repository
         {
             _context = context;
             _logger = logger;
+        }
+
+        public Task<IEnumerable<Game>> AllGames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<GameDTO> GameById(long id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<GameMinDTO>> SearchByListAsync(long listId)
@@ -60,6 +72,11 @@ namespace DSList.Repository
                 _logger.LogError(ex, $"Erro ao buscar jogos para a lista com ID={listId}");
                 throw;
             }
+        }
+
+        Task<IEnumerable<Game>> IGameRepository.SearchByListAsync(long listId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DSList.Entities;
 
 namespace DSList.DTOs
 {
@@ -17,6 +18,24 @@ namespace DSList.DTOs
         public string ShortDescription { get; set; }
         public string LongDescription { get; set; }
 
-       
+        // Construtor que recebe a entidade Game
+
+        // public GameDTO(Game entity)
+        // {
+        //     GameId = entity.GameId;
+        //     Title = entity.Title;
+        //     GameYear = entity.GameYear;
+        //     Genre = entity.Genre;
+        //     Platforms = entity.Platforms;
+        //     Score = entity.Score;
+        //     ImgUrl = entity.ImgUrl;
+        //     ShortDescription = entity.ShortDescription;
+        //     LongDescription = entity.LongDescription;
+        // }
+
+        //Contrutor vazio para chamadas somente do DTO
+        public GameDTO()
+        {
+        }
     }
 }
