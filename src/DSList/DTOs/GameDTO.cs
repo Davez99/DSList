@@ -37,5 +37,18 @@ namespace DSList.DTOs
         public GameDTO()
         {
         }
+
+        public GameDTO(long gameId, string title, int? gameYear, string genre, string platforms, double? score, string imgUrl, string shortDescription, string longDescription)
+        {
+            GameId = gameId;
+            Title = title;
+            GameYear = gameYear;
+            Genre = genre;
+            Platforms = platforms;
+            Score = score;
+            ImgUrl = imgUrl;
+            ShortDescription = shortDescription;
+            LongDescription = longDescription;
+        }
     }
 }

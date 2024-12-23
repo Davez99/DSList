@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DSList.Interfaces;
 using Microsoft.Data.Sqlite;
 
 namespace DSList.Services.Seeder
@@ -9,10 +10,16 @@ namespace DSList.Services.Seeder
     public class DatabaseSeeder
     {
         private readonly string _connectionString;
+        private readonly ISeedDataBase _SeedDatabase;
+        private readonly IGameRepository _gameRepository;
 
-        public DatabaseSeeder(string connectionString)
+        public DatabaseSeeder(string connectionString, 
+        ISeedDataBase seedDatabase, 
+        IGameRepository gameRepository)
         {
             _connectionString = connectionString;
+            _SeedDatabase = seedDatabase;
+            _gameRepository = gameRepository;
         }
 
         public void SeedDatabase()
@@ -26,18 +33,11 @@ namespace DSList.Services.Seeder
 
             var sqlScript = File.ReadAllText(scriptFilePath);
 
-            //Esse pedaço tem que sair daqui e usar o repository 
-            using (var connection = new SqliteConnection(_connectionString))
-            {
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = sqlScript;
-                    command.ExecuteNonQuery();
-                }
+            //Se já tiver realizado o Seeder uma vez, não executa novamente.
+            if(Task.Run(async () => await   _gameRepository.AllGames()).IsFaulted){
+                _SeedDatabase.ExecuteSeed(sqlScript);
             }
-            //até aqui.
+
             Console.WriteLine("Database seeded successfully!");
         }
 

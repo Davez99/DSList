@@ -15,7 +15,7 @@ using DSList.Entities;
 
 namespace DSList.Repository
 {
-    public class GameRepository: IGameRepository
+    public class GameRepository : IGameRepository
     {
         private readonly GameContext _context;
         private readonly ILogger<GameRepository> _logger;
@@ -26,14 +26,36 @@ namespace DSList.Repository
             _logger = logger;
         }
 
-        public Task<IEnumerable<Game>> AllGames()
+        public async Task<IEnumerable<Game>> AllGames()
         {
-            throw new NotImplementedException();
+            return await _context.Games.Select(g => new Game(
+            g.GameId
+            , g.Title
+            , g.GameYear
+            , g.Genre
+            , g.Platforms
+            , g.Score
+            , g.ImgUrl
+            , g.ShortDescription
+            , g.LongDescription
+            ))
+                .ToListAsync();
         }
 
-        public Task<GameDTO> GameById(long id)
+        public async Task<GameDTO> GameById(long id)
         {
-            throw new NotImplementedException();
+            var result = await _context.Games.FindAsync(id);
+            return new GameDTO(
+                result.GameId
+                , result.Title
+                , result.GameYear
+                , result.Genre
+                , result.Platforms
+                , result.Score
+                , result.ImgUrl
+                , result.ShortDescription
+                , result.LongDescription
+            );
         }
 
         public async Task<IEnumerable<GameMinDTO>> SearchByListAsync(long listId)
@@ -74,8 +96,37 @@ namespace DSList.Repository
             }
         }
 
-        Task<IEnumerable<Game>> IGameRepository.SearchByListAsync(long listId)
+        async Task<IEnumerable<Game>> IGameRepository.SearchByListAsync(long listId)
         {
+            if (listId <= 0)
+            {
+                throw new ArgumentException("Identificação não pode ser nula nem 0");
+            }
+            var query = @"
+                SELECT g.Id, g.Title, g.GameYear, g.ImgUrl, g.ShortDescription
+                FROM tb_game g
+                INNER JOIN tb_belonging b ON g.Id = b.GameId
+                WHERE b.ListId = @ListId
+                ORDER BY b.Position";
+
+
+            var parametros = new DynamicParameters();
+            parametros.Add("@ListId", listId);
+
+            try
+            {
+                _logger.LogInformation($"Buscando jogos pela lista com ID={listId}");
+                var result = await _context.Database.GetDbConnection().QueryAsync<Game>(query, parametros);
+                _logger.LogInformation($"Busca concluída com sucesso para a lista com ID={listId}");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erro ao buscar jogos para a lista com ID={listId}");
+                throw;
+            }
+
             throw new NotImplementedException();
         }
     }

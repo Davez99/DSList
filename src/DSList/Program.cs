@@ -28,8 +28,8 @@ var app = builder.Build();
 // Executa as migrações e o seeder durante a inicialização
 using (var scope = app.Services.CreateScope())
 {
-    // var dbContext = scope.ServiceProvider.GetRequiredService<GameContext>();
-    // dbContext.Database.Migrate(); // Aplica as migrações
+    var dbContext = scope.ServiceProvider.GetRequiredService<GameContext>();
+    dbContext.Database.Migrate(); // Aplica as migrações
 
     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
     seeder.SeedDatabase(); // Executa o seeder
