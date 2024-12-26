@@ -1,4 +1,7 @@
 using DSList.Data;
+using DSList.Interfaces;
+using DSList.Repository;
+using DSList.Services;
 using DSList.Services.Seeder;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +18,16 @@ builder.Services.AddDbContext<GameContext>(option =>
 
 // // Configuração do SQLite
 // var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// builder.Services.AddSingleton(new DatabaseSeeder(connectionString));
+
+
+//Adição do escopo de Service Scoped
+
+builder.Services.AddScoped<IGameListRepository, GameListRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<ISeedDataBase, DataBaseSeederRepository>();
+builder.Services.AddScoped<DatabaseSeeder>();
+builder.Services.AddScoped<GameListService>();
+builder.Services.AddScoped<GameService>();
 
 //Adição da Leitura das controllers
 builder.Services.AddControllers();

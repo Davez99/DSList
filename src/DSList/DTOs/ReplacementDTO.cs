@@ -7,8 +7,8 @@ namespace DSList.DTOs
 {
     public class ReplacementDTO
     {
-        public int? SourceIndex { get; set; }
-        public int? DestinationIndex { get; set; }
+        public int SourceIndex { get; set; }
+        public int DestinationIndex { get; set; }
     }
 
 }

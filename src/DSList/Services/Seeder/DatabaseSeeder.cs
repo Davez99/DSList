@@ -9,15 +9,13 @@ namespace DSList.Services.Seeder
 {
     public class DatabaseSeeder
     {
-        private readonly string _connectionString;
         private readonly ISeedDataBase _SeedDatabase;
         private readonly IGameRepository _gameRepository;
 
-        public DatabaseSeeder(string connectionString, 
+        public DatabaseSeeder(
         ISeedDataBase seedDatabase, 
         IGameRepository gameRepository)
         {
-            _connectionString = connectionString;
             _SeedDatabase = seedDatabase;
             _gameRepository = gameRepository;
         }
@@ -34,7 +32,7 @@ namespace DSList.Services.Seeder
             var sqlScript = File.ReadAllText(scriptFilePath);
 
             //Se já tiver realizado o Seeder uma vez, não executa novamente.
-            if(Task.Run(async () => await   _gameRepository.AllGames()).IsFaulted){
+            if(!_SeedDatabase.VerificationSeed()){
                 _SeedDatabase.ExecuteSeed(sqlScript);
             }
 

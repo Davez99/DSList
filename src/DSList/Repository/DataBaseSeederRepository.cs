@@ -32,5 +32,10 @@ namespace DSList.Repository
                 throw;
             }
         }
+
+        public bool VerificationSeed()
+        {
+            return _context.Games.ToList().Count() > 0 ? true : false;
+        }
     }
 }

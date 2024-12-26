@@ -67,7 +67,7 @@ namespace DSList.Repository
 
             var query = @"
                 SELECT 
-                    tb_game.id, 
+                    tb_game.GameId, 
                     tb_game.title, 
                     tb_game.game_year AS Year, 
                     tb_game.img_url AS ImgUrl, 
@@ -103,11 +103,11 @@ namespace DSList.Repository
                 throw new ArgumentException("Identificação não pode ser nula nem 0");
             }
             var query = @"
-                SELECT g.Id, g.Title, g.GameYear, g.ImgUrl, g.ShortDescription
+                SELECT g.GameId, g.title, g.game_year, g.img_url, g.short_description
                 FROM tb_game g
-                INNER JOIN tb_belonging b ON g.Id = b.GameId
-                WHERE b.ListId = @ListId
-                ORDER BY b.Position";
+                INNER JOIN tb_belonging b ON g.GameId = b.game_id
+                WHERE b.list_id = @ListId
+                ORDER BY b.position";
 
 
             var parametros = new DynamicParameters();

@@ -8,5 +8,6 @@ namespace DSList.Interfaces
     public interface ISeedDataBase
     {
         void ExecuteSeed(string query);
+        bool VerificationSeed();
     }
 }
